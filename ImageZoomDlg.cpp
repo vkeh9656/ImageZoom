@@ -31,6 +31,10 @@ void CImageZoomDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CImageZoomDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON2, &CImageZoomDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CImageZoomDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CImageZoomDlg::OnBnClickedButton4)
+
 END_MESSAGE_MAP()
 
 
@@ -45,8 +49,25 @@ BOOL CImageZoomDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 큰 아이콘을 설정합니다.
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
+	SetBackgroundColor(RGB(168, 168, 0));
+
 	m_image.Load(L"1.png");
 
+	CRect wnd_r, client_r;
+	GetWindowRect(wnd_r);
+	GetClientRect(client_r);
+
+	m_cx_margin = wnd_r.Width() - client_r.Width() + 4;
+	m_cy_margin = wnd_r.Height() - client_r.Height() + 4;
+
+	GetDlgItem(IDC_BUTTON2)->GetWindowRect(wnd_r);
+	ScreenToClient(wnd_r);
+
+	m_top_margin = wnd_r.bottom;
+
+	SetWindowPos(NULL, 0, 0, 
+		m_image.GetWidth() * m_zoom_level + m_cx_margin,
+		m_image.GetHeight() * m_zoom_level + m_cy_margin + m_top_margin, SWP_NOMOVE);
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -75,7 +96,7 @@ void CImageZoomDlg::OnPaint()
 	}
 	else
 	{
-		m_image.Draw(dc, 0, 0, m_image.GetWidth() * 2, m_image.GetHeight() * 2);
+		m_image.Draw(dc, 2, 2+m_top_margin, m_image.GetWidth() * m_zoom_level, m_image.GetHeight() * m_zoom_level);
 		// CDialogEx::OnPaint();
 	}
 }
@@ -87,3 +108,29 @@ HCURSOR CImageZoomDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+void CImageZoomDlg::OnBnClickedButton2()
+{
+	m_zoom_level = 2;
+	SetWindowPos(NULL, 0, 0, m_image.GetWidth() * m_zoom_level + m_cx_margin,
+		m_image.GetHeight() * m_zoom_level + m_cy_margin + m_top_margin, SWP_NOMOVE);
+	Invalidate();
+}
+
+
+void CImageZoomDlg::OnBnClickedButton3()
+{
+	m_zoom_level = 3;
+	SetWindowPos(NULL, 0, 0, m_image.GetWidth() * m_zoom_level + m_cx_margin,
+		m_image.GetHeight() * m_zoom_level + m_cy_margin + m_top_margin, SWP_NOMOVE);
+	Invalidate();
+}
+
+
+void CImageZoomDlg::OnBnClickedButton4()
+{
+	m_zoom_level = 4;
+	SetWindowPos(NULL, 0, 0, m_image.GetWidth() * m_zoom_level + m_cx_margin,
+		m_image.GetHeight() * m_zoom_level + m_cy_margin + m_top_margin, SWP_NOMOVE);
+	Invalidate();
+}

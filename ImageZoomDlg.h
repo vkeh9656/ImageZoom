@@ -10,6 +10,8 @@ class CImageZoomDlg : public CDialogEx
 {
 private:
 	CImage m_image;
+	int m_cx_margin, m_cy_margin, m_top_margin;
+	int m_zoom_level = 2;
 // 생성입니다.
 public:
 	CImageZoomDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
@@ -32,4 +34,8 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedButton2();
+	afx_msg void OnBnClickedButton3();
+	afx_msg void OnBnClickedButton4();
 };
