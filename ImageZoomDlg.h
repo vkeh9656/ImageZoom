@@ -8,6 +8,8 @@
 // CImageZoomDlg 대화 상자
 class CImageZoomDlg : public CDialogEx
 {
+private:
+	CImage m_image;
 // 생성입니다.
 public:
 	CImageZoomDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
